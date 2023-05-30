@@ -10,7 +10,7 @@ Or they need to:
 
 ## How this works in broad strokes
 
-All tests that uses authentication inherits from the `EndToEndTestCase` class. This class configures `JwtBearerOptions` to use a randomly generated signing key, and then uses the `JwtBearerHandler` to generate a token. This token is then used in the `Authorization` header of the request.
+All tests that uses authentication inherits from the `EndToEndTestCase` class. This class configures `JwtBearerOptions` to use a randomly generated signing key, and then uses the `JwtSecurityTokenHandler` to generate a token. This token is then used in the `Authorization` header of the request.
 
 It also have a convenience class `TestJwtToken` that provides a fluent interface to adding claims such as `role` and `upn` to the token.
 
