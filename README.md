@@ -1,5 +1,7 @@
 # Testing JWT apps
 
+[![.NET](https://github.com/FrodeHus/testing-jwt-apps/actions/workflows/dotnet.yml/badge.svg)](https://github.com/FrodeHus/testing-jwt-apps/actions/workflows/dotnet.yml)
+
 This is a repo to demonstrate how to easily write E2E tests for apps that have JWT authentication enabled.
 
 Often, this is a pain point for developers, as they need to write a lot of boilerplate code to get the JWT token, and then use it in the tests.
