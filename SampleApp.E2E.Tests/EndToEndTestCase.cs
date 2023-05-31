@@ -23,11 +23,11 @@ public abstract class EndToEndTestCase : IAsyncDisposable
                     {
                         options.Configuration = new OpenIdConnectConfiguration
                         {
-                            Issuer = JwtTokenGenerator.Issuer,
+                            Issuer = JwtTokenProvider.Issuer,
                         };
-                        options.TokenValidationParameters.ValidIssuer = JwtTokenGenerator.Issuer;
-                        options.TokenValidationParameters.ValidAudience = JwtTokenGenerator.Issuer;
-                        options.Configuration.SigningKeys.Add(JwtTokenGenerator.SecurityKey);
+                        options.TokenValidationParameters.ValidIssuer = JwtTokenProvider.Issuer;
+                        options.TokenValidationParameters.ValidAudience = JwtTokenProvider.Issuer;
+                        options.Configuration.SigningKeys.Add(JwtTokenProvider.SecurityKey);
                     }
                 );
             });

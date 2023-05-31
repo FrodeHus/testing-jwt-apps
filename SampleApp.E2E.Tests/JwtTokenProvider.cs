@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace SampleApp.E2E.Tests;
 
-public static class JwtTokenGenerator
+public static class JwtTokenProvider
 {
     public static string Issuer { get; } = "Sample_Auth_Server";
     public static SecurityKey SecurityKey { get; } =

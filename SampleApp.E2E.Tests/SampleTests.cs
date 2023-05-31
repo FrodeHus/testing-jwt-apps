@@ -9,7 +9,7 @@ public class SampleTests : EndToEndTestCase
     [Fact]
     public async Task Should_Allow_All_RegisteredUsers()
     {
-        var token = new JwtTokenGenerator.TestJwtToken()
+        var token = new JwtTokenProvider.TestJwtToken()
             .WithRole("User")
             .WithUserName("testuser")
             .Build();
@@ -22,7 +22,7 @@ public class SampleTests : EndToEndTestCase
     [Fact]
     public async Task Should_Allow_Admins()
     {
-        var token = new JwtTokenGenerator.TestJwtToken()
+        var token = new JwtTokenProvider.TestJwtToken()
             .WithRole("Admin")
             .WithUserName("testuser")
             .Build();
@@ -35,7 +35,7 @@ public class SampleTests : EndToEndTestCase
     [Fact]
     public async Task Should_Reject_Non_Admins()
     {
-        var token = new JwtTokenGenerator.TestJwtToken()
+        var token = new JwtTokenProvider.TestJwtToken()
             .WithRole("User")
             .WithUserName("testuser")
             .Build();
