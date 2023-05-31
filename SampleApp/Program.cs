@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    o.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "Admin", "Operator"));
     o.AddPolicy("AllRegisteredUsers", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
 });
 
