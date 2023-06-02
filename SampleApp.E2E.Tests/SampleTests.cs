@@ -44,13 +44,14 @@ public class SampleTests : EndToEndTestCase
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
-    [Fact]
-    public async Task Should_Allow_Admins()
+    [Theory]
+    [InlineData("Admin")]
+    [InlineData("Operator")]
+    public async Task Should_Allow_Admins(string roleName)
     {
-        var token = new TestJwtToken().WithRole("Admin").WithUserName("testuser").Build();
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        var response = await Client.GetAsync("/admin");
+        var response = await Client
+            .WithJwtBearerToken(token => token.WithRole(roleName))
+            .GetAsync("/admin");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
