@@ -37,3 +37,18 @@ public async Task Should_Allow_Admin_To_Retrieve_Secret()
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 }
 ```
+
+or even:
+
+```csharp
+[Theory]
+[InlineData("Admin")]
+[InlineData("Operator")]
+public async Task Should_Allow_Power_Users(string roleName)
+{
+    var response = await Client
+        .WithJwtBearerToken(token => token.WithRole(roleName))
+        .GetAsync("/admin");
+    response.StatusCode.Should().Be(HttpStatusCode.OK);
+}
+```
