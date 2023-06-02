@@ -47,7 +47,7 @@ public class SampleTests : EndToEndTestCase
     [Theory]
     [InlineData("Admin")]
     [InlineData("Operator")]
-    public async Task Should_Allow_Admins(string roleName)
+    public async Task Should_Allow_Power_Users(string roleName)
     {
         var response = await Client
             .WithJwtBearerToken(token => token.WithRole(roleName))
