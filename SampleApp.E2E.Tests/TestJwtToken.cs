@@ -26,6 +26,12 @@ public class TestJwtToken
         return this;
     }
 
+    public TestJwtToken WithDepartment(string department)
+    {
+        Claims.Add(new Claim("department", department));
+        return this;
+    }
+
     public TestJwtToken WithExpiration(int expiresInMinutes)
     {
         ExpiresInMinutes = expiresInMinutes;

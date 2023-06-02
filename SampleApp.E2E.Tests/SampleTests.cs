@@ -22,7 +22,7 @@ public class SampleTests : EndToEndTestCase
             new JwtSecurityToken(
                 JwtTokenProvider.Issuer,
                 JwtTokenProvider.Issuer,
-                new List<Claim> { new(ClaimTypes.Role, "Operator"), },
+                new List<Claim> { new(ClaimTypes.Role, "Operator"), new("department", "Security") },
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: JwtTokenProvider.SigningCredentials
             )
@@ -30,7 +30,7 @@ public class SampleTests : EndToEndTestCase
 
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await Client.GetAsync("/admin");
+        var response = await Client.GetAsync("/secrets");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
@@ -47,21 +47,35 @@ public class SampleTests : EndToEndTestCase
     [Theory]
     [InlineData("Admin")]
     [InlineData("Operator")]
-    public async Task Should_Allow_Power_Users(string roleName)
+    public async Task Should_Allow_Security_Power_Users(string roleName)
     {
         var response = await Client
-            .WithJwtBearerToken(token => token.WithRole(roleName))
-            .GetAsync("/admin");
+            .WithJwtBearerToken(token => token.WithRole(roleName).WithDepartment("Security"))
+            .GetAsync("/secrets");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Content.ReadAsStringAsync().Result.Should().Be(42.ToString());
+    }
+
+    [Theory]
+    [InlineData("Admin", "HR")]
+    [InlineData("Operator", "Finance")]
+    public async Task Should_Reject_Power_Users_From_Other_Departments(
+        string roleName,
+        string department
+    )
+    {
+        var response = await Client
+            .WithJwtBearerToken(token => token.WithRole(roleName).WithDepartment(department))
+            .GetAsync("/secrets");
+        response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 
     [Fact]
-    public async Task Should_Reject_Non_Admins()
+    public async Task Should_Reject_Non_Security_PowerUsers()
     {
-        var token = new TestJwtToken().WithRole("User").WithUserName("testuser").Build();
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        var response = await Client.GetAsync("/admin");
+        var response = await Client
+            .WithJwtBearerToken(token => token.WithRole("User").WithDepartment("Security"))
+            .GetAsync("/secrets");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
 }

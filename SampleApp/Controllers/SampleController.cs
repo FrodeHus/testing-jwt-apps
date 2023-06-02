@@ -15,11 +15,11 @@ public class SampleController : ControllerBase
         return Ok("Hello World!");
     }
 
-    [Authorize("AdminOnly")]
+    [Authorize("PowerUsers")]
     [HttpGet]
-    [Route("/admin")]
-    public IActionResult GetAdmin()
+    [Route("/secrets")]
+    public IActionResult GetSecrets()
     {
-        return Ok("Hello Admin!");
+        return Ok(42);
     }
 }

@@ -1,13 +1,22 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using SampleApp.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IAuthorizationHandler, DepartmentHandler>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "Admin", "Operator"));
+    o.AddPolicy(
+        "PowerUsers",
+        policy =>
+            policy
+                .RequireClaim(ClaimTypes.Role, "Admin", "Operator")
+                .Requirements.Add(new DepartmentRequirement("Security"))
+    );
     o.AddPolicy("AllRegisteredUsers", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
 });
 
