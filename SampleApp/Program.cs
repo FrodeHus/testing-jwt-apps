@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IAuthorizationHandler, DepartmentHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, AdminOverrideHandler>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddAuthorization(o =>
 {
