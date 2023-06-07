@@ -78,4 +78,14 @@ public class SampleTests : EndToEndTestCase
             .GetAsync("/secrets");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
     }
+
+    [Fact]
+    public async Task Should_Allow_Global_Admin()
+    {
+        var response = await Client
+            .WithJwtBearerToken(token => token.WithRole("GlobalAdmin").WithDepartment("IT"))
+            .GetAsync("/secrets");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Content.ReadAsStringAsync().Result.Should().Be(42.ToString());
+    }
 }
